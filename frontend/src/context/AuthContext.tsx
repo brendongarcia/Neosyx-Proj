@@ -97,7 +97,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             
     
             setCookie('token', data.token, { path: '/' });
-            router.push('/chat');
+            router.push('/login');
         } catch (e) {
             console.error('Erro durante o registro:', e);
             setError(e as Error);
