@@ -88,12 +88,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             });
             
             const data = await response.json();
-    
+
             if (!response.ok) {
-                console.error('Registration failed:', response.status, data);
+                console.error('Registration failed:', response, data);
                 setError(new Error(data.message || 'Registration failed'));
                 return;
             }
+            
     
             setCookie('token', data.token, { path: '/' });
             router.push('/chat');
