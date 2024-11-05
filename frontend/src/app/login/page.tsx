@@ -41,6 +41,8 @@ const Page = () => {
           >
             Login
           </button>
+          <p>Não tem uma conta?</p>
+          <a className="text-blue-600" href="/register">Clique aqui</a>
 
           <p className="text-red-600">{error?.message}</p>
         </form>
