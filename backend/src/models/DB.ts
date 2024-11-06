@@ -113,7 +113,7 @@ const sqlConfig:any ={
 async function query(queryString: string, params: { [key: string]: any } = {}) {
   try {
     const pool = await sql.connect(sqlConfig);
-    console.log("Conectado ao banco de dados com sucesso!");
+    // console.log("Conectado ao banco de dados com sucesso!");
 
     const request = pool.request();
 
@@ -123,13 +123,13 @@ async function query(queryString: string, params: { [key: string]: any } = {}) {
     }
 
     const result = await request.query(queryString);
-    console.log("Resultado da consulta:", result.recordset);
+    // console.log("Resultado da consulta:", result.recordset);
 
     return result;
   } catch (err) {
     console.error("Erro ao conectar ao banco de dados:", err);
     throw err;
   }
-}
+} 
 
 export { query };

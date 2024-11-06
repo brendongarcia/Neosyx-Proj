@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import socket from "@/lib/socket";
 import { useAuth } from "@/context/AuthContext";
 import { useUser } from "@/context/UserContext";
-
+import { useRef } from "react";
 export default function Page() {
   const room = 'general';
   const { user } = useAuth();
@@ -13,22 +13,23 @@ export default function Page() {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [messageContent, setMessageContent] = useState("");
-
+  const messagesEndRef = useRef<HTMLDivElement | null>(null); // Referência para o final da lista de mensagens
   const getMessages = async () => {
     try {
       const response = await fetch('http://localhost:8888/api/auth/getMessages');
       if (!response.ok) {
         throw new Error('Erro ao buscar usuários');
       }
+      
 
       const data = await response.json();
 
       // Mapeia o retorno da API para a estrutura da interface `Message`
       const formattedMessages = data.map((row: any) => ({
-          to: { id: row.idUserPara, name: row.nameUserPara },
-          sender: { id: row.idUserDe, name: row.nameUserDe },
-          content: row.mensagem
-      }));
+        to: { id: row.to_user_id, name: row.to_user_name },
+        sender: { id: row.from_user_id, name: row.from_user_name },
+        content: row.message
+    }));
 
       setMessages(formattedMessages);
 
@@ -58,6 +59,13 @@ export default function Page() {
       socket.off("message");
     };
   }, [selectedUser, user]);
+
+  useEffect(() => {
+    // Rola para o fim da lista de mensagens sempre que as mensagens mudam
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]); // Adiciona mensagens como dependência
 
   const sendMessage = async () => {
     if (!messageContent.trim()) return;
@@ -118,6 +126,7 @@ export default function Page() {
                 </div>
             );
         })}
+        <div ref={messagesEndRef} />
         </div>
         <input
           className="p-2 mt-1 text-black bg-gray-200 border border-gray-300 outline-none"

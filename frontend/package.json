@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "boundary": "^2.0.0",
     "jwt-decode": "^4.0.0",
     "next": "^14.2.16",
     "react": "^18.3.1",
