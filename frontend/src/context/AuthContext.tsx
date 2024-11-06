@@ -6,11 +6,11 @@ import { jwtDecode } from "jwt-decode";
 import { useCookies } from "react-cookie";
 import socket from '@/lib/socket';
 
-interface User {
-    id(arg0: string, id: any): unknown;
-    name: string;
-    email: string;
-}
+// interface User {
+//     id(arg0: string, id: any): unknown;
+//     name: string;
+//     email: string;
+// }
 
 interface AuthContextType {
     user: User | null;

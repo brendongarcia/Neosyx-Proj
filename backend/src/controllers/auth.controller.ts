@@ -204,9 +204,17 @@ const message = async (req: Request, res: Response) => {
 const getMessages = async (req: Request, res: Response) => {
   try {
     const result = await query(`
-      SELECT u.name AS username, m.* 
-      FROM messages m
-      INNER JOIN users u ON m.from_user_id = u.id
+      SELECT
+      from_user_id,
+      u.name as from_user_name,
+      to_user_id,
+      u2.name as to_user_name,
+      message
+    FROM messages m
+    left JOIN users u  ON m.from_user_id   = u.id
+    left JOIN users u2 ON m.to_user_id = u2.id
+    order by
+      m.id
     `);
     return res.status(200).json(result.recordset);
   } catch (error) {
