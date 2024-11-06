@@ -1,11 +1,11 @@
 'use client';
 
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import socket from "@/lib/socket";
 import { useAuth } from "@/context/AuthContext";
 import { useUser } from "@/context/UserContext";
 import { useRef } from "react";
+
 export default function Page() {
   const room = 'general';
   const { user } = useAuth();
@@ -13,7 +13,8 @@ export default function Page() {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [messageContent, setMessageContent] = useState("");
-  const messagesEndRef = useRef<HTMLDivElement | null>(null); // Referência para o final da lista de mensagens
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
   const getMessages = async () => {
     try {
       const response = await fetch('http://localhost:8888/api/auth/getMessages');
@@ -21,15 +22,13 @@ export default function Page() {
         throw new Error('Erro ao buscar usuários');
       }
       
-
       const data = await response.json();
 
-      // Mapeia o retorno da API para a estrutura da interface `Message`
       const formattedMessages = data.map((row: any) => ({
         to: { id: row.to_user_id, name: row.to_user_name },
         sender: { id: row.from_user_id, name: row.from_user_name },
         content: row.message
-    }));
+      }));
 
       setMessages(formattedMessages);
 
@@ -61,11 +60,10 @@ export default function Page() {
   }, [selectedUser, user]);
 
   useEffect(() => {
-    // Rola para o fim da lista de mensagens sempre que as mensagens mudam
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages]); // Adiciona mensagens como dependência
+  }, [messages]);
 
   const sendMessage = async () => {
     if (!messageContent.trim()) return;
@@ -106,35 +104,42 @@ export default function Page() {
 
   return (
     selectedUser && (
-      <main className="flex flex-col justify-between bg-[#0a0a0a] min-h-96  h-full w-full flex-1">
-        <div className="flex flex-col w-full p-1 text-black overflow-y-scroll">
-        {filteredMessages.map((message, index) => {
+      <main className="flex flex-col justify-between bg-[#0a0a0a] min-h-screen h-full w-full flex-1 p-4">
+        <div className="flex flex-col w-full space-y-4 overflow-y-scroll">
+          {filteredMessages.map((message, index) => {
             const showName = index === 0 || message.to?.id !== filteredMessages[index - 1].to?.id;
-
             return (
-                <div key={index} className={`flex flex-row w-full ${message.sender?.id === user?.id ? "justify-end" : "justify-start"}`}>
-                    <div className={`mt-1 ${message.sender?.id === user?.id ? "bg-[#008069]" : "bg-gray-600"} rounded-lg w-fit`}>
-                        {showName && (
-                            <span className="p-2 font-bold text-green-300">
-                                ~ {message.sender.name}
-                            </span>
-                        )}
-                        <p className="px-2 mt-2 font-medium text-right text-white rounded-md w-fit">
-                            {message.content}
-                        </p>
-                    </div>
+              <div key={index} className={`flex flex-row w-full ${message.sender?.id === user?.id ? "justify-end" : "justify-start"}`}>
+                <div className={`mt-2 ${message.sender?.id === user?.id ? "bg-[#008069]" : "bg-gray-600"} rounded-lg max-w-xs p-2 shadow-lg`}>
+                  {showName && (
+                    <span className="font-semibold text-green-300 text-xs">{message.sender.name}</span>
+                  )}
+                  <p className={`mt-1 text-white text-sm`}>
+                    {message.content}
+                  </p>
                 </div>
+              </div>
             );
-        })}
-        <div ref={messagesEndRef} />
+          })}
+          <div ref={messagesEndRef} />
         </div>
-        <input
-          className="p-2 mt-1 text-black bg-gray-200 border border-gray-300 outline-none"
-          type="text"
-          value={messageContent}
-          onChange={(e) => setMessageContent(e.target.value)}
-          onKeyUp={(e) => e.key === "Enter" && sendMessage()}
-        />
+
+        <div className="mt-4 flex items-center space-x-2">
+          <input
+            className="w-full p-3 bg-gray-700 text-white rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            type="text"
+            value={messageContent}
+            onChange={(e) => setMessageContent(e.target.value)}
+            onKeyUp={(e) => e.key === "Enter" && sendMessage()}
+            placeholder="Digite sua mensagem..."
+          />
+          <button
+            onClick={sendMessage}
+            className="p-3 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+          >
+            Enviar
+          </button>
+        </div>
       </main>
     )
   );

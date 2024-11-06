@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             console.error("Error decoding token:", error);
             setError(error as Error);
         }
-    }, [cookie.token]);
+    }, [router]);
 
     const login = async (username: string, password: string) => {
         const headers = new Headers();
