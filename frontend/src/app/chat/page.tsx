@@ -38,7 +38,6 @@ export default function Page() {
   };
 
   useEffect(() => {
-
     getMessages();
 
     if (!selectedUser || !user) return;
@@ -104,17 +103,17 @@ export default function Page() {
 
   return (
     selectedUser && (
-      <main className="flex flex-col justify-between bg-[#0a0a0a] min-h-screen h-full w-full flex-1 p-4">
-        <div className="flex flex-col w-full space-y-4 overflow-y-scroll">
+      <main className="flex flex-col justify-between bg-cover bg-center bg-fixed min-h-screen h-full w-full flex-1 p-4 " style={{ backgroundImage: 'url("/caminho-da-imagem.jpg")' }}>
+        <div className="flex flex-col w-full space-y-4 overflow-y-scroll max-h-[85vh]">
           {filteredMessages.map((message, index) => {
             const showName = index === 0 || message.to?.id !== filteredMessages[index - 1].to?.id;
             return (
               <div key={index} className={`flex flex-row w-full ${message.sender?.id === user?.id ? "justify-end" : "justify-start"}`}>
-                <div className={`mt-2 ${message.sender?.id === user?.id ? "bg-[#008069]" : "bg-gray-600"} rounded-lg max-w-xs p-2 shadow-lg`}>
+                <div className={`mt-2 ${message.sender?.id === user?.id ? "bg-teal-500" : "bg-blue-500"} rounded-lg max-w-xs p-3 shadow-xl`}>
                   {showName && (
-                    <span className="font-semibold text-green-300 text-xs">{message.sender.name}</span>
+                    <span className="font-bold text-black text-lg">{message.sender.name}</span>
                   )}
-                  <p className={`mt-1 text-white text-sm`}>
+                  <p className={`mt-1 text-white text-base`}>
                     {message.content}
                   </p>
                 </div>
@@ -122,11 +121,11 @@ export default function Page() {
             );
           })}
           <div ref={messagesEndRef} />
+          
         </div>
-
         <div className="mt-4 flex items-center space-x-2">
           <input
-            className="w-full p-3 bg-gray-700 text-white rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-full p-3 bg-gray-600 text-white rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-gray-500"
             type="text"
             value={messageContent}
             onChange={(e) => setMessageContent(e.target.value)}
@@ -135,7 +134,7 @@ export default function Page() {
           />
           <button
             onClick={sendMessage}
-            className="p-3 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="p-3 bg-teal-600 text-white rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
           >
             Enviar
           </button>
