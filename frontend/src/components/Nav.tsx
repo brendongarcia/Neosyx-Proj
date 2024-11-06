@@ -49,7 +49,7 @@ const Nav = () => {
   }, [socket]);
 
   return (
-    <nav className="h-screen p-6 bg-gradient-to-r from-gray-700 to-gray-900 text-white shadow-xl flex flex-col items-start rounded-xl border-4 border-gradient-to-r from-gray-700 to-gray-900">
+    <nav className="h-screen p-6 bg-gradient-to-r from-gray-700 to-gray-900 text-white shadow-xl flex flex-col items-start  border border-gradient-to-r from-gray-700 to-gray-900">
       <h2 className="text-3xl font-extrabold mb-8 text-white transform transition-all duration-300 ease-in-out hover:text-gray-300 shadow-lg p-3 rounded-lg">
         Contatos
       </h2>
@@ -58,7 +58,7 @@ const Nav = () => {
           <p className="text-gray-400 text-center text-lg">Nenhum usuário disponível</p>
         ) : (
           users
-            .filter(user => user.name !== socket?.auth?.user?.name) // Filtra o próprio usuário
+            .filter(user => user.name !== socket?.auth?.user?.name)
             .map((user, index) => (
               <button
                 key={index}

@@ -100,20 +100,39 @@ export default function Page() {
     (message?.to?.id === user?.id && message?.sender?.id === selectedUser?.id) || 
     (message?.to?.id === selectedUser?.id && message?.sender?.id === user?.id)
   );
-
   return (
     selectedUser && (
-      <main className="flex flex-col justify-between bg-cover bg-center bg-fixed min-h-screen h-full w-full flex-1 p-4 " style={{ backgroundImage: 'url("/caminho-da-imagem.jpg")' }}>
+      <main
+        className="flex flex-col justify-between bg-cover bg-center bg-fixed min-h-screen h-full w-full flex-1 p-4"
+        style={{ backgroundImage: 'url("/caminho-da-imagem.jpg")' }}
+      >
         <div className="flex flex-col w-full space-y-4 overflow-y-scroll max-h-[85vh]">
           {filteredMessages.map((message, index) => {
-            const showName = index === 0 || message.to?.id !== filteredMessages[index - 1].to?.id;
+            const showName =
+              index === 0 ||
+              message.to?.id !== filteredMessages[index - 1].to?.id;
             return (
-              <div key={index} className={`flex flex-row w-full ${message.sender?.id === user?.id ? "justify-end" : "justify-start"}`}>
-                <div className={`mt-2 ${message.sender?.id === user?.id ? "bg-teal-500" : "bg-blue-500"} rounded-lg max-w-xs p-3 shadow-xl`}>
+              <div
+                key={index}
+                className={`flex flex-row w-full ${
+                  message.sender?.id === user?.id
+                    ? "justify-end"
+                    : "justify-start"
+                }`}
+              >
+                <div
+                  className={`mt-2 ${
+                    message.sender?.id === user?.id
+                      ? "bg-teal-500"
+                      : "bg-blue-500"
+                  } rounded-lg max-w-xs p-3 shadow-xl`}
+                >
                   {showName && (
-                    <span className="font-bold text-black text-lg">{message.sender.name}</span>
+                    <span className="font-bold text-gray-900 text-lg tracking-wide">
+                      {message.sender.name}
+                    </span>
                   )}
-                  <p className={`mt-1 text-white text-base`}>
+                  <p className="mt-1 text-gray-100 text-base leading-relaxed tracking-wide">
                     {message.content}
                   </p>
                 </div>
@@ -121,11 +140,11 @@ export default function Page() {
             );
           })}
           <div ref={messagesEndRef} />
-          
         </div>
+  
         <div className="mt-4 flex items-center space-x-2">
           <input
-            className="w-full p-3 bg-gray-600 text-white rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="w-full p-3 bg-gray-600 text-white rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-gray-500 placeholder-gray-400"
             type="text"
             value={messageContent}
             onChange={(e) => setMessageContent(e.target.value)}
@@ -134,7 +153,7 @@ export default function Page() {
           />
           <button
             onClick={sendMessage}
-            className="p-3 bg-teal-600 text-white rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="p-3 bg-teal-600 text-white rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all duration-200"
           >
             Enviar
           </button>
@@ -142,4 +161,5 @@ export default function Page() {
       </main>
     )
   );
+  
 }
