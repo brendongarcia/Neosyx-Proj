@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             socket.auth = { user: decodedToken };
             socket.connect();
         } catch (error) {
-            console.error("Error decoding token:", error);
+            console.error("Erro ao decodificar token:", error);
             setError(error as Error);
         }
     }, [router]);
@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             const data = await response.json();
 
             if (!response.ok || !data.token) {
-                setError(new Error(data.message || 'Login failed'));
+                setError(new Error(data.message || 'Falha ao logar'));
                 return;
             }
 
@@ -91,7 +91,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
             if (!response.ok) {
                 console.error('Registration failed:', response, data);
-                setError(new Error(data.message || 'Registration failed'));
+                setError(new Error(data.message || 'Cadastro falhou'));
                 return;
             }
             
